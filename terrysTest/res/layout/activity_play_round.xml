@@ -1,0 +1,149 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/holeNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/holeNumber" />
+
+    <RelativeLayout
+        android:id="@+id/courseInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/holeNumber"
+        android:layout_centerHorizontal="true"
+        tools:context="${relativePackage}.${activityClass}" >
+
+        <TextView
+            android:id="@+id/par"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/par" />
+
+        <TextView
+            android:id="@+id/SI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/par"
+            android:text="@string/SI" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/courseInfo"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal"
+        tools:context="${relativePackage}.${activityClass}" >
+
+        <ToggleButton
+            android:id="@+id/leftToggleButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.333"
+            android:text="@string/left"
+            android:textOff="@string/left"
+            android:textOn="@string/left" />
+
+        <ToggleButton
+            android:id="@+id/straightToggleButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.334"
+            android:checked="true"
+            android:text="@string/straight"
+            android:textOff="@string/straight"
+            android:textOn="@string/straight" />
+
+        <ToggleButton
+            android:id="@+id/rightToggleButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.333"
+            android:text="@string/right"
+            android:textOff="@string/right"
+            android:textOn="@string/right" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/shotInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonRow"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        tools:context="${relativePackage}.${activityClass}" >
+
+        <TextView
+            android:id="@+id/shotsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/shotsSpinner"
+            android:layout_alignTop="@+id/shotsSpinner"
+            android:text="@string/shots" />
+
+        <Spinner
+            android:id="@+id/shotsSpinner"
+            style="@style/AppBaseTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/shots"
+            android:spinnerMode="dialog"
+            android:prompt="@string/shots" >
+        </Spinner>
+
+        <TextView
+            android:id="@+id/puttsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/puttsSpinner"
+            android:layout_alignTop="@+id/puttsSpinner"
+            android:text="@string/putts" />
+
+        <Spinner
+            android:id="@+id/puttsSpinner"
+            style="@style/AppBaseTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:entries="@array/shots"
+            android:prompt="@string/shots" >
+        </Spinner>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/shotInfo"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        tools:context="${relativePackage}.${activityClass}" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:onClick="previousHole"
+            android:text="@string/previous" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:onClick="nextHole"
+            android:text="@string/next" />
+    </LinearLayout>
+
+</RelativeLayout>
