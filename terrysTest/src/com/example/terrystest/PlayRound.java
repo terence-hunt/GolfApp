@@ -6,33 +6,31 @@ import com.example.terrystest.PlayRoundPackage.HoleInformation;
 import com.example.terrystest.PlayRoundPackage.PlayRoundMaster;
 import com.example.terrystest.PlayRoundPackage.ScoreInfo;
 import com.example.terrystest.PlayRoundPackage.ShotDirection;
+import com.example.terrystest.PlayRoundPackage.ShotsInfo;
 import com.example.terrystest.PlayerData.Player;
 import com.example.terrystest.PlayerData.PlayerFactory;
-import com.example.terrystest.ScoreData.HoleScore;
 import com.example.terrystest.ScoreData.Score;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import com.example.terrystest.GolfAppConfiguration.GolfAppConfigInstance;
 
-public class PlayRound extends Activity implements OnItemSelectedListener {
-
-	Spinner shotsSpinner;
-	Spinner puttsSpinner;
+public class PlayRound extends Activity implements OnItemSelectedListener   {
 
 	GolfCourse golfCourse;
 	Player player;
 	Score score;
-	long holeNumber;
+	long holeNumber = 1;
 	//the following is what notifies the listeners that the hole number has changed.
 	PlayRoundMaster playRoundMaster;
 
@@ -43,12 +41,6 @@ public class PlayRound extends Activity implements OnItemSelectedListener {
 
 		score = new Score();
 		playRoundMaster = new PlayRoundMaster();
-		
-		shotsSpinner = (Spinner)findViewById(R.id.shotsSpinner);
-		puttsSpinner = (Spinner)findViewById(R.id.puttsSpinner);
-		
-		shotsSpinner.setOnItemSelectedListener(this);
-		puttsSpinner.setOnItemSelectedListener(this);
 
 		Bundle extras = getIntent().getExtras();
 		Intent intent = getIntent();
@@ -70,22 +62,13 @@ public class PlayRound extends Activity implements OnItemSelectedListener {
 		Cursor cursor1 = playerDatabase.getCourseInfo(courseID);
 		Cursor cursor2 = playerDatabase.getHoleInfo(courseID);
 		golfCourse = gcFactory.createGolfCourse(cursor1, cursor2);
-		
+
 		initToggleButtonBar();
-		holeNumber=1;
 		updateView(0);
 	}
 
 	private void updateView(int holeDelta) {
 		holeNumber += holeDelta;
-		if(!score.exists(holeNumber)){
-			//if a score for this hole does not exist yet put in default values
-			score.addScoreForHole(holeNumber, golfCourse.getHole((int)holeNumber).getPar(), 2);
-		}
-
-		HoleScore holeScore = score.getHoleScore(holeNumber);
-		shotsSpinner.setSelection((int)holeScore.getShots());
-		puttsSpinner.setSelection((int)holeScore.getPutts());
 
 		Button previous = (Button)findViewById(R.id.button1);
 		Button next = (Button)findViewById(R.id.button2);
@@ -107,13 +90,10 @@ public class PlayRound extends Activity implements OnItemSelectedListener {
 	}
 
 	private void save() {
-		long shots = Integer.parseInt(shotsSpinner.getSelectedItem().toString());
-		long putts = Integer.parseInt(puttsSpinner.getSelectedItem().toString());
-		score.addScoreForHole(holeNumber,shots,putts);
 		playRoundMaster.saveListeners((int)holeNumber);
 	}
-	
-	private void saveAndMoveToNextHole(int deltaHole){
+
+	public void saveAndMoveToNextHole(int deltaHole){
 		save();
 		updateView(deltaHole);
 	}
@@ -124,24 +104,37 @@ public class PlayRound extends Activity implements OnItemSelectedListener {
 	public void previousHole(View view){
 		saveAndMoveToNextHole(-1);
 	}
-	
+
 	private void initToggleButtonBar(){
 		//initiates both the toggle button bar and the hole information bar
-		ToggleButton leftToggleButton = (ToggleButton) findViewById(R.id.leftToggleButton);
-		ToggleButton straightToggleButton = (ToggleButton) findViewById(R.id.straightToggleButton);
-		ToggleButton rightToggleButton = (ToggleButton) findViewById(R.id.rightToggleButton);
-		LinearLayout layout = (LinearLayout)findViewById(R.id.buttonRow);
-		new ShotDirection(layout,leftToggleButton, straightToggleButton, rightToggleButton, playRoundMaster, score);
-		
+		//shots and putts input bar
+		Spinner shots = (Spinner)findViewById(R.id.shotsSpinner);
+		Spinner putts = (Spinner)findViewById(R.id.puttsSpinner);
+		RelativeLayout layoutRel = (RelativeLayout)findViewById(R.id.shotInfo);
+		new ShotsInfo(shots, putts, playRoundMaster, score, golfCourse,this,layoutRel);
+		//tee shot direction input
+		if(GolfAppConfigInstance.getGolfAppConfigurationInstance().getRecordTeeShotDirection()){
+			ToggleButton leftToggleButton = (ToggleButton) findViewById(R.id.leftToggleButton);
+			ToggleButton straightToggleButton = (ToggleButton) findViewById(R.id.straightToggleButton);
+			ToggleButton rightToggleButton = (ToggleButton) findViewById(R.id.rightToggleButton);
+			LinearLayout layout = (LinearLayout)findViewById(R.id.buttonRow);
+			new ShotDirection(layout,leftToggleButton, straightToggleButton, rightToggleButton, playRoundMaster, score);
+		}
+		//hole Information panel
 		TextView holeNumberTextView = (TextView)findViewById(R.id.holeNumber);
 		TextView parTextView = (TextView)findViewById(R.id.par);
 		TextView strokeIndexTextView = (TextView)findViewById(R.id.SI);
 		new HoleInformation(holeNumberTextView,strokeIndexTextView,parTextView,golfCourse,playRoundMaster);
-		
+		//score information
 		TextView nettScore = (TextView)findViewById(R.id.nettScore);
 		TextView grossScore = (TextView)findViewById(R.id.GrossScore);
 		TextView stapleford = (TextView)findViewById(R.id.staplefordScore);
 		new ScoreInfo(nettScore, grossScore, stapleford, playRoundMaster, score, golfCourse, (int)player.getHandicap());
+	}
+
+	@Override
+	public void onBackPressed() {
+		//make the backbutton to nothing to prevent losing the round part way through.
 	}
 
 	@Override
@@ -151,7 +144,8 @@ public class PlayRound extends Activity implements OnItemSelectedListener {
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		
+		//this should never be called.
+		throw new RuntimeException("This method should never be called");
 	}
 }
 
