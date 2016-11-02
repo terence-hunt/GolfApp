@@ -3,7 +3,7 @@ package com.example.terrystest.ScoreData;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import GolfCourseData.GolfCourse;
+import com.example.terrystest.GolfCourseData.GolfCourse;
 
 public class Score {
 	ArrayList<HoleScore> score;
@@ -63,14 +63,13 @@ public class Score {
 		int quotant = Math.round(playerHandicap) / 18;
 		int remainder = Math.round(playerHandicap) % 18;
 		for(int i=1 ; i <= score.size() ; i++){
-			if((golfCourse.getHole(i).getPar() - getHoleScore(i).getShots()+2+quotant+remainder) > 0){
+			if((golfCourse.getHole(i).getPar() - getHoleScore(i).getShots()+2+quotant) > 0){
 				staplefordScore += (golfCourse.getHole(i).getPar() - getHoleScore(i).getShots()+2+quotant);
 				if(remainder >= golfCourse.getHole(i).getStrokeIndex()){
 					staplefordScore++;
 				}
 			}
 		}
-
 		return staplefordScore;
 	}
 }

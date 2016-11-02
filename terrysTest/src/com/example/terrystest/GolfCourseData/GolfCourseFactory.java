@@ -1,4 +1,4 @@
-package GolfCourseData;
+package com.example.terrystest.GolfCourseData;
 
 import android.database.Cursor;
 

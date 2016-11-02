@@ -1,15 +1,16 @@
 package com.example.terrystest;
 
+import com.example.terrystest.GolfCourseData.GolfCourse;
+import com.example.terrystest.GolfCourseData.GolfCourseFactory;
+import com.example.terrystest.PlayRoundPackage.HoleInformation;
+import com.example.terrystest.PlayRoundPackage.PlayRoundMaster;
+import com.example.terrystest.PlayRoundPackage.ScoreInfo;
+import com.example.terrystest.PlayRoundPackage.ShotDirection;
 import com.example.terrystest.PlayerData.Player;
 import com.example.terrystest.PlayerData.PlayerFactory;
 import com.example.terrystest.ScoreData.HoleScore;
 import com.example.terrystest.ScoreData.Score;
-import GolfCourseData.GolfCourse;
-import GolfCourseData.GolfCourseFactory;
-import PlayRound.HoleInformation;
-import PlayRound.PlayRoundMaster;
-import PlayRound.ScoreInfo;
-import PlayRound.ShotDirection;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;

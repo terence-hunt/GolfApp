@@ -1,7 +1,8 @@
-package PlayRound;
+package com.example.terrystest.PlayRoundPackage;
 
 
-import GolfCourseData.GolfCourse;
+import com.example.terrystest.GolfCourseData.GolfCourse;
+
 import android.widget.TextView;
 
 public class HoleInformation implements PlayRoundListenerInterface{

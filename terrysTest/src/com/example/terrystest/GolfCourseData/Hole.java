@@ -1,4 +1,4 @@
-package GolfCourseData;
+package com.example.terrystest.GolfCourseData;
 
 public class Hole {
 	int strokeIndex;

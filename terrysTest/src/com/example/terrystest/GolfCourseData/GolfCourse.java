@@ -1,4 +1,4 @@
-package GolfCourseData;
+package com.example.terrystest.GolfCourseData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
