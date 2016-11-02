@@ -93,7 +93,7 @@ public class PlayRound extends Activity implements OnItemSelectedListener   {
 		playRoundMaster.saveListeners((int)holeNumber);
 	}
 
-	public void saveAndMoveToNextHole(int deltaHole){
+	private void saveAndMoveToNextHole(int deltaHole){
 		save();
 		updateView(deltaHole);
 	}
