@@ -6,9 +6,11 @@ import com.example.terrystest.ShotDirection.ShotDirectionStateLeft;
 import com.example.terrystest.ShotDirection.ShotDirectionStateRight;
 import com.example.terrystest.ShotDirection.ShotDirectionStateStraight;
 
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
 
 public class ShotDirection implements PlayRoundListenerInterface {
 	
@@ -22,7 +24,7 @@ public class ShotDirection implements PlayRoundListenerInterface {
 	ShotDirectionStateStraight straightState;
 	ShotDirectionState shotDirectionState;
  
-	public ShotDirection(ToggleButton left, ToggleButton straight, ToggleButton right, PlayRoundMaster playRoundMaster, Score score){
+	public ShotDirection(LinearLayout layout,ToggleButton left, ToggleButton straight, ToggleButton right, PlayRoundMaster playRoundMaster, Score score){
 		this.leftTB = left;
 		this.straightTB = straight;
 		this.rightTB = right;
@@ -32,6 +34,7 @@ public class ShotDirection implements PlayRoundListenerInterface {
 		this.straightState = new ShotDirectionStateStraight(leftTB, straightTB, rightTB);
 		this.rightState = new ShotDirectionStateRight(leftTB, straightTB, rightTB);
 		registerAsListener();
+		layout.setVisibility(View.VISIBLE);
 		
 		leftTB.setOnCheckedChangeListener(listener);
 		straightTB.setOnCheckedChangeListener(listener);
@@ -41,7 +44,10 @@ public class ShotDirection implements PlayRoundListenerInterface {
 	@Override
 	public void update(int holeNumber) {
 		String direction =  score.getHoleScore(holeNumber).getTeeShotDirection();
-		if(direction.equals("Left")){
+		if(direction == null){
+			shotDirectionState = straightState;
+		}
+		else if(direction.equals("Left")){
 			shotDirectionState = leftState;
 		}
 		else if (direction.equals("Right")){
@@ -83,5 +89,10 @@ public class ShotDirection implements PlayRoundListenerInterface {
 	
 	public String getShotDirection(){
 		return shotDirectionState.getDirection();
+	}
+
+	@Override
+	public void save(int holeNumber) {
+		score.updateShotDirection((long)holeNumber, getShotDirection());
 	}
 }

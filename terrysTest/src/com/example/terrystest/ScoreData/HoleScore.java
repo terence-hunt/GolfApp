@@ -8,12 +8,17 @@ public class HoleScore {
 	public HoleScore(long shots, long putts, String direction) {
 		this.shots = shots;
 		this.putts = putts;
-		if(direction.equals("Straight") || direction.equals("Left") || direction.equals("Right")){
-			this.teeShotDirection = direction;
-		}
-		else{
-			throw new RuntimeException("Invalid shot direction");
-		}
+		this.teeShotDirection = directionValidator(direction);
+
+	}
+	
+	public HoleScore(long shots, long putts) {
+		this.shots = shots;
+		this.putts = putts;
+	}
+	
+	public void addShotDirection(String teeShotDirection){
+		this.teeShotDirection = directionValidator(teeShotDirection);
 	}
 	
 	public long getShots(){
@@ -24,5 +29,15 @@ public class HoleScore {
 	}
 	public String getTeeShotDirection(){
 		return teeShotDirection;
+	}
+	
+	public String directionValidator(String direction){
+		if(direction.equals("Straight") || direction.equals("Left") || direction.equals("Right")){
+			this.teeShotDirection = direction;
+			return direction;
+		}
+		else{
+			throw new RuntimeException("Invalid shot direction");
+		}
 	}
 }

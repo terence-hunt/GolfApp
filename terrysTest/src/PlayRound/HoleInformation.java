@@ -32,4 +32,8 @@ public class HoleInformation implements PlayRoundListenerInterface{
 		playRound.registerListener(this);
 	}
 
+	@Override
+	public void save(int holeNumber) {
+		//no information needs to be saved from the holeInfo
+	}
 }

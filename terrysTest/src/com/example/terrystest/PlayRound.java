@@ -8,18 +8,22 @@ import GolfCourseData.GolfCourse;
 import GolfCourseData.GolfCourseFactory;
 import PlayRound.HoleInformation;
 import PlayRound.PlayRoundMaster;
+import PlayRound.ScoreInfo;
 import PlayRound.ShotDirection;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-public class PlayRound extends Activity {
+public class PlayRound extends Activity implements OnItemSelectedListener {
 
 	Spinner shotsSpinner;
 	Spinner puttsSpinner;
@@ -30,10 +34,6 @@ public class PlayRound extends Activity {
 	long holeNumber;
 	//the following is what notifies the listeners that the hole number has changed.
 	PlayRoundMaster playRoundMaster;
-	//the following is a view that shows course info, in the future it could be expanded to contain a map
-	HoleInformation holeInformation;
-	//this encapsulates the shot direction buttons.
-	ShotDirection shotDirection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,9 @@ public class PlayRound extends Activity {
 		
 		shotsSpinner = (Spinner)findViewById(R.id.shotsSpinner);
 		puttsSpinner = (Spinner)findViewById(R.id.puttsSpinner);
+		
+		shotsSpinner.setOnItemSelectedListener(this);
+		puttsSpinner.setOnItemSelectedListener(this);
 
 		Bundle extras = getIntent().getExtras();
 		Intent intent = getIntent();
@@ -76,7 +79,7 @@ public class PlayRound extends Activity {
 		holeNumber += holeDelta;
 		if(!score.exists(holeNumber)){
 			//if a score for this hole does not exist yet put in default values
-			score.addScoreForHole(holeNumber, golfCourse.getHole((int)holeNumber).getPar(), 2, "Straight");
+			score.addScoreForHole(holeNumber, golfCourse.getHole((int)holeNumber).getPar(), 2);
 		}
 
 		HoleScore holeScore = score.getHoleScore(holeNumber);
@@ -105,8 +108,8 @@ public class PlayRound extends Activity {
 	private void save() {
 		long shots = Integer.parseInt(shotsSpinner.getSelectedItem().toString());
 		long putts = Integer.parseInt(puttsSpinner.getSelectedItem().toString());
-		String direction = shotDirection.getShotDirection();
-		score.addScoreForHole(holeNumber,shots,putts,direction);
+		score.addScoreForHole(holeNumber,shots,putts);
+		playRoundMaster.saveListeners((int)holeNumber);
 	}
 	
 	private void saveAndMoveToNextHole(int deltaHole){
@@ -126,12 +129,28 @@ public class PlayRound extends Activity {
 		ToggleButton leftToggleButton = (ToggleButton) findViewById(R.id.leftToggleButton);
 		ToggleButton straightToggleButton = (ToggleButton) findViewById(R.id.straightToggleButton);
 		ToggleButton rightToggleButton = (ToggleButton) findViewById(R.id.rightToggleButton);
-		shotDirection = new ShotDirection(leftToggleButton, straightToggleButton, rightToggleButton, playRoundMaster, score);
+		LinearLayout layout = (LinearLayout)findViewById(R.id.buttonRow);
+		new ShotDirection(layout,leftToggleButton, straightToggleButton, rightToggleButton, playRoundMaster, score);
 		
 		TextView holeNumberTextView = (TextView)findViewById(R.id.holeNumber);
 		TextView parTextView = (TextView)findViewById(R.id.par);
 		TextView strokeIndexTextView = (TextView)findViewById(R.id.SI);
-		holeInformation = new HoleInformation(holeNumberTextView,strokeIndexTextView,parTextView,golfCourse,playRoundMaster);
+		new HoleInformation(holeNumberTextView,strokeIndexTextView,parTextView,golfCourse,playRoundMaster);
+		
+		TextView nettScore = (TextView)findViewById(R.id.nettScore);
+		TextView grossScore = (TextView)findViewById(R.id.GrossScore);
+		TextView stapleford = (TextView)findViewById(R.id.staplefordScore);
+		new ScoreInfo(nettScore, grossScore, stapleford, playRoundMaster, score, golfCourse, (int)player.getHandicap());
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		saveAndMoveToNextHole(0);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+		
 	}
 }
 

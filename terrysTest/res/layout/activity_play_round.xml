@@ -35,12 +35,43 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/scoreRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/courseInfo"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:context="${relativePackage}.${activityClass}" >
+
+        <TextView
+            android:id="@+id/nettScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="@string/par" />
+
+        <TextView
+            android:id="@+id/GrossScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="@string/par" />
+
+        <TextView
+            android:id="@+id/staplefordScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/par" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/buttonRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/courseInfo"
         android:layout_marginTop="50dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         tools:context="${relativePackage}.${activityClass}" >
 
         <ToggleButton
@@ -96,8 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:entries="@array/shots"
-            android:spinnerMode="dialog"
-            android:prompt="@string/shots" >
+            android:prompt="@string/shots"
+            android:spinnerMode="dialog" >
         </Spinner>
 
         <TextView
@@ -125,8 +156,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/shotInfo"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
         android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         tools:context="${relativePackage}.${activityClass}" >
 
         <Button

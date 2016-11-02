@@ -10,5 +10,8 @@ public class Player {
 		this.handicap = handicap;
 		this.email = email;
 	}
+	public long getHandicap(){
+		return handicap;
+	}
 
 }
