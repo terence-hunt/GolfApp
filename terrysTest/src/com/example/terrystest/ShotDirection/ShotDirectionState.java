@@ -2,6 +2,8 @@ package com.example.terrystest.ShotDirection;
 
 import android.widget.ToggleButton;
 
+//TODO if the toggle button is selected need to remove the listener
+
 public abstract class ShotDirectionState {
 	
 	ToggleButton leftToggleButton;
