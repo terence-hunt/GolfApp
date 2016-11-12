@@ -33,6 +33,7 @@ public class GolfAppConfigFactory implements Serializable {
 				}
 			}
 		}
+		//test
 		return scoringConfig;
 	}
 }
