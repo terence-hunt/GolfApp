@@ -39,4 +39,9 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, PlayerSelect.class);
         startActivity(intent);
     }
+    
+    public void runConfig(View view){
+        Intent intent = new Intent(this, GolfappConfigurationActivity.class);
+        startActivity(intent);
+    }
 }

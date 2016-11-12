@@ -41,6 +41,8 @@
     <string name="previous">Previous</string>
     <string name="add">Add</string>
     <string name="title_activity_new_course">NewCourse</string>
+    <string name="recordShotDirection">Record Tee Shot Direction</string>
+    <string name="config">App Configuration</string>
 
     <string-array name="shots">
         <item>0</item>
@@ -59,5 +61,7 @@
         <item>Edit Player</item>
         <item>Delete Player</item>
     </string-array>
+
+    <string name="title_activity_golfapp_configuration">GolfAppConfiguration</string>
 
 </resources>

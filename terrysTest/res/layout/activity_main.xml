@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   xmlns:tools="http://schemas.android.com/tools"
-   android:orientation="horizontal"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <Button
+        android:id="@+id/playRound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_start_round"
         android:onClick="startRound"
-         />
-    	
+        android:text="@string/button_start_round" />
+
+    <Button
+        android:id="@+id/config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="runConfig"
+        android:text="@string/config" />
+
 </LinearLayout>

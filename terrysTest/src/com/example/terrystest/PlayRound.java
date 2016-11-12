@@ -23,9 +23,10 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import com.example.terrystest.GolfAppConfiguration.GolfAppConfigInstance;
 
-public class PlayRound extends Activity implements OnItemSelectedListener   {
+import com.example.terrystest.GolfAppConfiguration.GolfAppConfigFactory;
+
+public class PlayRound extends Activity implements OnItemSelectedListener {
 
 	GolfCourse golfCourse;
 	Player player;
@@ -113,7 +114,7 @@ public class PlayRound extends Activity implements OnItemSelectedListener   {
 		RelativeLayout layoutRel = (RelativeLayout)findViewById(R.id.shotInfo);
 		new ShotsInfo(shots, putts, playRoundMaster, score, golfCourse,this,layoutRel);
 		//tee shot direction input
-		if(GolfAppConfigInstance.getGolfAppConfigurationInstance().getRecordTeeShotDirection()){
+		if(GolfAppConfigFactory.getGolfAppConfigScoring().getRecordTeeShotDirection()){
 			ToggleButton leftToggleButton = (ToggleButton) findViewById(R.id.leftToggleButton);
 			ToggleButton straightToggleButton = (ToggleButton) findViewById(R.id.straightToggleButton);
 			ToggleButton rightToggleButton = (ToggleButton) findViewById(R.id.rightToggleButton);
