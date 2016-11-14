@@ -1,10 +1,13 @@
 package com.example.terrystest;
 
+import java.util.HashMap;
+
 import com.example.terrystest.GolfAppConfiguration.GolfAppConfigFactory;
 import com.example.terrystest.GolfAppConfiguration.GolfAppConfigScoring;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -21,36 +24,43 @@ public class GolfappConfigurationActivity extends Activity {
 		//add all the configuration options.
 		GolfAppConfigScoring scoringConfig = GolfAppConfigFactory.getGolfAppConfigScoring();
 		recordShotDirection = (Switch)findViewById(R.id.ShotDirection);
-		recordShotDirection.setChecked(scoringConfig.getRecordTeeShotDirection());
-
+		recordShotDirection.setChecked(scoringConfig.getConfigurationAttribute(GolfAppConfigScoring.RECORD_TEE_SHOT_DIRECTION));
 		recordShotDirection.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				boolean[] boolArray = new boolean[1];
-				boolArray[0] = recordShotDirection.isChecked();
-				GolfAppConfigFactory.getGolfAppConfigScoring().save(boolArray);
+				//saveConfig();
 			}
 		});
 	}
+	@Override
+	public void onBackPressed() {
+	    this.saveConfig();
+	    super.onBackPressed();
+	}
 
 	public void onPause(Bundle savedInstanceState){
-		//save all the inputs from the user
-		boolean[] boolArray = new boolean[1];
-		boolArray[0] = recordShotDirection.isChecked();
-		GolfAppConfigFactory.getGolfAppConfigScoring().save(boolArray);
+		//TODO this does not work
+		Log.i("TerryTerryTerry", "onPause was called");
+		this.saveConfig();
+		super.onPause();
 	}
 
 	public void onStop(Bundle savedInstanceState){
-		//save all the inputs from the user
-		boolean[] boolArray = new boolean[1];
-		boolArray[0] = recordShotDirection.isChecked();
-		GolfAppConfigFactory.getGolfAppConfigScoring().save(boolArray);
+
 	}
 	public void onDestroy(Bundle savedInstanceState){
-		//save all the inputs from the user
-		boolean[] boolArray = new boolean[1];
-		boolArray[0] = recordShotDirection.isChecked();
-		GolfAppConfigFactory.getGolfAppConfigScoring().save(boolArray);
+
+	}
+	
+	private void saveConfig(){
+		HashMap<Integer, Boolean> configAttributes = new HashMap<Integer, Boolean>();
+		configAttributes.put(GolfAppConfigScoring.RECORD_NUMBER_OF_PUTTS, true);
+		configAttributes.put(GolfAppConfigScoring.RECORD_TEE_SHOT_DIRECTION, recordShotDirection.isChecked());
+		configAttributes.put(GolfAppConfigScoring.SHOW_STAPLEFORD_SCORE,true);
+		configAttributes.put(GolfAppConfigScoring.SHOW_GROSS_SCORE,true);
+		configAttributes.put(GolfAppConfigScoring.SHOW_NETT_SCORE, true);
+		configAttributes.put(GolfAppConfigScoring.SHOW_NUMBER_OF_PUTTS, true);
+		GolfAppConfigFactory.getGolfAppConfigScoring().save(configAttributes);
 	}
 
 }

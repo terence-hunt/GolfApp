@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.example.terrystest.GolfAppConfiguration.GolfAppConfigFactory;
+import com.example.terrystest.GolfAppConfiguration.GolfAppConfigScoring;
 
 public class PlayRound extends Activity implements OnItemSelectedListener {
 
@@ -114,7 +115,7 @@ public class PlayRound extends Activity implements OnItemSelectedListener {
 		RelativeLayout layoutRel = (RelativeLayout)findViewById(R.id.shotInfo);
 		new ShotsInfo(shots, putts, playRoundMaster, score, golfCourse,this,layoutRel);
 		//tee shot direction input
-		if(GolfAppConfigFactory.getGolfAppConfigScoring().getRecordTeeShotDirection()){
+		if(GolfAppConfigFactory.getGolfAppConfigScoring().getConfigurationAttribute(GolfAppConfigScoring.RECORD_TEE_SHOT_DIRECTION)){
 			ToggleButton leftToggleButton = (ToggleButton) findViewById(R.id.leftToggleButton);
 			ToggleButton straightToggleButton = (ToggleButton) findViewById(R.id.straightToggleButton);
 			ToggleButton rightToggleButton = (ToggleButton) findViewById(R.id.rightToggleButton);
