@@ -63,5 +63,6 @@
     </string-array>
 
     <string name="title_activity_golfapp_configuration">GolfAppConfiguration</string>
+    <string name="title_activity_view_score_card">ViewScoreCard</string>
 
 </resources>

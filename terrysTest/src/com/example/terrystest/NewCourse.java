@@ -1,8 +1,9 @@
 package com.example.terrystest;
 
-import com.example.terrystest.GolfCourseData.GolfCourse;
-import com.example.terrystest.GolfCourseData.GolfCourseFactory;
-import com.example.terrystest.GolfCourseData.Hole;
+
+import com.example.terrystest.GolfRoundData.GolfCourseData.GolfCourse;
+import com.example.terrystest.GolfRoundData.GolfCourseData.GolfCourseFactory;
+import com.example.terrystest.GolfRoundData.GolfCourseData.Hole;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -1,10 +1,11 @@
 package com.example.terrystest.PlayRoundPackage;
 
-import com.example.terrystest.ScoreData.Score;
-import com.example.terrystest.ShotDirection.ShotDirectionState;
-import com.example.terrystest.ShotDirection.ShotDirectionStateLeft;
-import com.example.terrystest.ShotDirection.ShotDirectionStateRight;
-import com.example.terrystest.ShotDirection.ShotDirectionStateStraight;
+import com.example.terrystest.GolfRoundData.GolfRound;
+import com.example.terrystest.GolfRoundData.Score;
+import com.example.terrystest.PlayRoundPackage.ShotDirection.ShotDirectionState;
+import com.example.terrystest.PlayRoundPackage.ShotDirection.ShotDirectionStateLeft;
+import com.example.terrystest.PlayRoundPackage.ShotDirection.ShotDirectionStateRight;
+import com.example.terrystest.PlayRoundPackage.ShotDirection.ShotDirectionStateStraight;
 
 import android.view.View;
 import android.widget.CompoundButton;
@@ -12,39 +13,36 @@ import android.widget.ToggleButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 
-public class ShotDirection implements PlayRoundListenerInterface {
-	
+public class ShotDirectionBar implements PlayRoundListenerInterface {
+
 	ToggleButton leftTB;
 	ToggleButton straightTB;
 	ToggleButton rightTB;
 	PlayRoundMaster playRoundMaster;
-	Score score;
+	GolfRound round;
 	ShotDirectionStateLeft leftState;
 	ShotDirectionStateRight rightState;
 	ShotDirectionStateStraight straightState;
 	ShotDirectionState shotDirectionState;
- 
-	public ShotDirection(LinearLayout layout,ToggleButton left, ToggleButton straight, ToggleButton right, PlayRoundMaster playRoundMaster, Score score){
+
+	public ShotDirectionBar(LinearLayout layout,ToggleButton left, ToggleButton straight, ToggleButton right, PlayRoundMaster playRoundMaster, GolfRound round){
 		this.leftTB = left;
 		this.straightTB = straight;
 		this.rightTB = right;
 		this.playRoundMaster = playRoundMaster;
-		this.score = score;
-		this.leftState = new ShotDirectionStateLeft(leftTB, straightTB, rightTB);
-		this.straightState = new ShotDirectionStateStraight(leftTB, straightTB, rightTB);
-		this.rightState = new ShotDirectionStateRight(leftTB, straightTB, rightTB);
+		this.round = round;
+		this.leftState = new ShotDirectionStateLeft(leftTB, straightTB, rightTB,listener);
+		this.straightState = new ShotDirectionStateStraight(leftTB, straightTB, rightTB,listener);
+		this.rightState = new ShotDirectionStateRight(leftTB, straightTB, rightTB,listener);
 		registerAsListener();
 		layout.setVisibility(View.VISIBLE);
-		
-		leftTB.setOnCheckedChangeListener(listener);
-		straightTB.setOnCheckedChangeListener(listener);
-		rightTB.setOnCheckedChangeListener(listener);
 	}
 
 	@Override
 	public void update(int holeNumber) {
+		Score score = round.getPlayersScore(0).getScore();
 		String direction =  score.getHoleScore(holeNumber).getTeeShotDirection();
-		if(direction == null){
+		if(direction == null || direction.equals("Straight")){
 			shotDirectionState = straightState;
 		}
 		else if(direction.equals("Left")){
@@ -53,30 +51,25 @@ public class ShotDirection implements PlayRoundListenerInterface {
 		else if (direction.equals("Right")){
 			shotDirectionState = rightState;
 		}
-		else if (direction.equals("Straight")){
-			shotDirectionState = straightState;
-		}
 		else {
 			throw new RuntimeException("Invalid shot direction");
 		}
 		shotDirectionState.update();
 	}
-	
+
 	OnCheckedChangeListener listener = new OnCheckedChangeListener(){
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) { 
 			//if it is changing to checked then isChecked = true
-			if(isChecked){
-				if(buttonView == leftTB){
-					shotDirectionState = leftState;
-				}
-				else if (buttonView == straightTB){
-					shotDirectionState = straightState;
-				}
-				else if(buttonView == rightTB){
-					shotDirectionState = rightState;
-				}
+			if(buttonView == leftTB){
+				shotDirectionState = leftState;
+			}
+			else if (buttonView == straightTB){
+				shotDirectionState = straightState;
+			}
+			else if(buttonView == rightTB){
+				shotDirectionState = rightState;
 			}
 			shotDirectionState.update();
 		}
@@ -86,13 +79,10 @@ public class ShotDirection implements PlayRoundListenerInterface {
 	public void registerAsListener() {
 		playRoundMaster.registerListener(this);
 	}
-	
-	public String getShotDirection(){
-		return shotDirectionState.getDirection();
-	}
 
 	@Override
 	public void save(int holeNumber) {
-		score.updateShotDirection((long)holeNumber, getShotDirection());
+		Score score = round.getPlayersScore(0).getScore();
+		score.getScoreForHole(holeNumber).addShotDirection(shotDirectionState.getDirection());
 	}
 }

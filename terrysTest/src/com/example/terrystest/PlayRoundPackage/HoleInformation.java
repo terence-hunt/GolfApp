@@ -1,7 +1,7 @@
 package com.example.terrystest.PlayRoundPackage;
 
-
-import com.example.terrystest.GolfCourseData.GolfCourse;
+import com.example.terrystest.GolfRoundData.GolfRound;
+import com.example.terrystest.GolfRoundData.GolfCourseData.GolfCourse;
 
 import android.widget.TextView;
 
@@ -10,19 +10,20 @@ public class HoleInformation implements PlayRoundListenerInterface{
 	TextView holeNumberTextView;
 	TextView holeSITextView;
 	TextView holeParTextView;
-	GolfCourse golfCourse;
+	GolfRound round;
 	PlayRoundMaster playRound;
 	
-	public HoleInformation(TextView holeNumber, TextView holeSI, TextView holePar, GolfCourse golfCourse, PlayRoundMaster playRound){
+	public HoleInformation(TextView holeNumber, TextView holeSI, TextView holePar, GolfRound round, PlayRoundMaster playRound){
 		this.holeNumberTextView = holeNumber;
 		this.holeSITextView = holeSI;
 		this.holeParTextView = holePar;
-		this.golfCourse = golfCourse;
+		this.round = round;
 		this.playRound = playRound;
 		registerAsListener();
 	}
 
 	public void update(int holeNumber) {
+		GolfCourse golfCourse = round.getGolfCourse();
 		holeNumberTextView.setText("Hole Number: " + holeNumber);
 		holeSITextView.setText("SI: " + golfCourse.getHole(holeNumber).getStrokeIndex());
 		holeParTextView.setText("Par: " + golfCourse.getHole(holeNumber).getPar());	

@@ -3,8 +3,8 @@ package com.example.terrystest;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.example.terrystest.GolfCourseData.GolfCourse;
-import com.example.terrystest.GolfCourseData.Hole;
+import com.example.terrystest.GolfRoundData.GolfCourseData.GolfCourse;
+import com.example.terrystest.GolfRoundData.GolfCourseData.Hole;
 
 import android.content.ContentValues;
 import android.content.Context;

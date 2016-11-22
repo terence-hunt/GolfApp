@@ -1,4 +1,4 @@
-package com.example.terrystest.ScoreData;
+package com.example.terrystest.GolfRoundData;
 
 public class HoleScore {
 	long shots;
@@ -9,18 +9,17 @@ public class HoleScore {
 		this.shots = shots;
 		this.putts = putts;
 		this.teeShotDirection = directionValidator(direction);
-
 	}
-	
+
 	public HoleScore(long shots, long putts) {
 		this.shots = shots;
 		this.putts = putts;
 	}
-	
+
 	public void addShotDirection(String teeShotDirection){
 		this.teeShotDirection = directionValidator(teeShotDirection);
 	}
-	
+
 	public long getShots(){
 		return shots;
 	}
@@ -30,7 +29,7 @@ public class HoleScore {
 	public String getTeeShotDirection(){
 		return teeShotDirection;
 	}
-	
+
 	public String directionValidator(String direction){
 		if(direction.equals("Straight") || direction.equals("Left") || direction.equals("Right")){
 			this.teeShotDirection = direction;
@@ -38,6 +37,21 @@ public class HoleScore {
 		}
 		else{
 			throw new RuntimeException("Invalid shot direction");
+		}
+	}
+	public String getFIR(){
+
+		if(this.teeShotDirection == "Straight"){
+			return "^";
+		}
+		else if(this.teeShotDirection == "Right" ){
+			return "-->";
+		}
+		else if(this.teeShotDirection == "Left"){
+			return "<--";
+		}
+		else {
+			return "NR";
 		}
 	}
 }
